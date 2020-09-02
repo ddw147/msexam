@@ -1,6 +1,7 @@
 package com.exam.msexam.auth.role;
 
-import java.sql.Date;
+import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,6 +24,9 @@ public class Role {
     private Date createdDate;
 
     @LastModifiedDate
-    private Date lastModifiedDate;
+    private Date updatedDate;
+
+    @Column(columnDefinition = "boolean default true")
+    private Boolean isActive;   
     
 }
