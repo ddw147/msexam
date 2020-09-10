@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -23,34 +22,32 @@ public class RoleController {
     private RoleService roleService;
 
     @GetMapping
-    public List<Role> getRoles() {
+    public List<RoleDTO> getRoles() {
         return roleService.getAll();
     }
 
     @GetMapping("/{roleId}")
     public RoleDTO getRole(@PathVariable Long roleId){
-        return RoleDTO.transform(roleService.findRole(roleId));
+        return roleService.findRole(roleId);
     }
 
     @DeleteMapping("/{roleId}")
     public void deleteRole(@PathVariable Long roleId) {
-        roleService.delete(roleId);
+        roleService.deleteRole(roleId);
+    }
+
+    @PutMapping("/{roleId}/restore")
+    public void restoreRole(@PathVariable Long roleId) {
+        roleService.restoreRole(roleId);
     }
 
     @PostMapping
-    public Role addRole(@Valid @RequestBody RoleDTO roleDto) {
-        Role role = new Role();
-        role.setName(roleDto.getName());
-        return roleService.saveRole(role);
+    public RoleDTO addRole(@Valid @RequestBody RoleDTO roleDto) {
+        return roleService.saveRole(roleDto);
     }
 
     @PutMapping("/{roleId}")
-    public Role addRole(@Valid @RequestBody RoleDTO roleDto, @RequestParam Long roleId) {
-        Role role = roleService.findRole(roleId);
-        role.setName(roleDto.getName());
-        return roleService.saveRole(role);
+    public RoleDTO updateRole(@Valid @RequestBody RoleDTO roleDto, @PathVariable Long roleId) {
+        return roleService.updateRole(roleDto,roleId);
     }
-
-
-
 }
